@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Para rodar o container rode os blocos no terminal da pasta desejada:
 
 sudo apt-get update
@@ -40,8 +39,3 @@ Compile o codigo como:
 Execute com:
 
     java -jar test.jar
-=======
-olá mundo STROGONOFF
-olá mundo feito por maximus parte 7
-
->>>>>>> a1ec051af06b3722c9dae8f2df8765b3b20014cf
