@@ -1,4 +1,5 @@
 package meu.projeto
+
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -8,23 +9,24 @@ import io.ktor.server.http.content.*
 import java.io.File
 
 fun main() {
-    // host 0.0.0.0 é obrigatório para o Docker expor a porta
+    println("Iniciando servidor Snake.kt no JDK 21...")
+    
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         routing {
-            // Rota principal: serve o arquivo index.html que está na raiz
+            // Serve o index.html na raiz
             get("/") {
-                val file = File("../index.html") // Sobe um nível pois o projeto está na pasta /app
+                val file = File("index.html")
                 if (file.exists()) {
                     call.respondFile(file)
                 } else {
-                    call.respondText("Arquivo index.html não encontrado na raiz!")
+                    // Tenta o caminho relativo caso esteja dentro da pasta app
+                    call.respondFile(File("../index.html"))
                 }
             }
-            
-            // Rota de API de exemplo para você testar se o Kotlin está processando
-            get("/api/status") {
-                call.respondText("Kotlin rodando no JDK 21 via Docker!")
-            }
+
+            // Permite que o HTML carregue scripts, imagens e CSS da pasta raiz
+            staticFiles("/", File(".")) 
+            staticFiles("/", File("../"))
         }
     }.start(wait = true)
 }

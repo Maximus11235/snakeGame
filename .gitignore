@@ -14,6 +14,9 @@ ehthumbs_vista.db
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+app/build
+
+
 # Windows Installer files
 *.cab
 *.msi
@@ -74,7 +77,7 @@ Temporary Items
 *.iml
 *.ipr
 *.iws
-/.idea/*
+
 
 # Exclude non-user-specific stuff
 !.idea/.name
