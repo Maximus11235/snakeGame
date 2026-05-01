@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Atualiza e instala tudo em uma única camada (mais eficiente)
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jdk \
+    openjdk-21-jdk \
     kotlin \
     gradle \
     curl \
