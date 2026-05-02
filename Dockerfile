@@ -25,7 +25,10 @@ RUN curl -L https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-b
 
 # Adiciona o Gradle ao PATH do sistema
 ENV PATH=$PATH:${GRADLE_HOME}/bin
-
+#Define o caminho para o Java que o apt-get instalou
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+#Adiciona o executável do Java ao caminho do sistema
+ENV PATH=$JAVA_HOME/bin:$PATH
 # Cria e define a pasta de trabalho
 WORKDIR /app
 
