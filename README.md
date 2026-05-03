@@ -1,3 +1,14 @@
+# Snake Game
+
+Snake game é um jogo livre para todas as idades que tem como função principal testar a 
+capacidade mental e resistencia emocional dos desenvolvedores que acham que sabem de algo
+
+# Requisitos:
+- WSL2
+- UBUNTU 22.04
+- UM COMPUTADOR??
+- PACIENCIA
+
 # Para rodar o container rode os blocos no terminal da pasta desejada:
 
     sudo apt-get update
@@ -17,25 +28,42 @@
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 
-    sudo usermod -aG docker $USER
+    newgrp docker (Ele cria um novo shell "dentro" do atual. Se você digitar exit,
+                   voltará para o shell anterior onde o grupo ainda não está ativo.) 
 
 
     sudo service docker start
 
 
-    docker compose up -d --build
+    docker compose up -d --build 
+
+    
 
 
 # Para executar:
+Acorde o container com:
 
-Entre no container que contém a aplicação:
+    docker compose start
+
+Para entrar no container que contém a aplicação:
 
     docker exec -it snake-container bash
 
-Compile o codigo como:
+Para criar a estrutura dos arquivos, o wrapper do Gradle e os arquivos de build iniciais:
 
-    kotlinc test.kt -include-runtime -d test.jar
+    gradle init --type kotlin-application --dsl kotlin --package meu.projeto --project-name ktor-web
 
-Execute com:
+Aparecerá:
 
-    java -jar test.jar
+    Enter target Java version (min: 7, default: 21): 21
+    Select application structure:  1: Single application project  2: Application and library project
+    Enter selection (default: Single application project) [1..2] 1
+    Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no] no
+    Task :initTo learn more about Gradle by exploring our Samples at 
+
+Para rodar o gradle:
+
+    ./gradlew :app:run
+
+Abra a porta disponível no navegador (se a sua porta estiver sendo usada por outra aplicação, 
+apresentará erros)
