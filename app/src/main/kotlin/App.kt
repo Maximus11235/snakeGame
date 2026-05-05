@@ -16,6 +16,7 @@ fun main() {
             // Serve tudo o que estiver em src/main/resources/static
             staticResources("/", "static") {
                 default("index.html") // Define o index.html como página inicial
+                default("style.css")
             }
         }
     }.start(wait = true)

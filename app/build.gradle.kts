@@ -57,3 +57,7 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.withType<JavaExec> {
+    systemProperty("io.ktor.development", "true")
+}
