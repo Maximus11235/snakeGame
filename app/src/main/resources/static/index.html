@@ -8,6 +8,17 @@
     <title>SNAKE.io</title>
 </head>
 <body>
-    <h1>AGORA VAI! TESTANDO!!!!</h1>
+    <div id="game-container">
+        <div id="scoreboard">
+            <span>Pontuação: <strong id="score">0</strong></span>
+        </div>
+        
+        <!-- O "tabuleiro" é um elemento único -->
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        
+        <div id="status">Conectando ao servidor...</div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
