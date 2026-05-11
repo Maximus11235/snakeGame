@@ -1,3 +1,4 @@
+package kotlin.*;
 import java.util.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -9,16 +10,6 @@ import java.io.File
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 
-// 1. IMPORTS NOVOS AQUI
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-
-// 2. AS CLASSES FICAM AQUI FORA! (Como se fossem o "molde" do jogo)
-@Serializable
-data class Posicao(val x: Int, val y: Int)
-
-@Serializable
-data class EstadoDoJogo(val cobra: List<Posicao>, val comida: Posicao)
 
 fun main() {
     println("Iniciando servidor Snake.kt no JDK 21...")
