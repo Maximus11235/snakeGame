@@ -9,6 +9,7 @@ class Jogo(val largura : Int,val altura : Int)
     val snake = Snake(Posicao(largura/2 ,altura/2))
     val wall = Wall().apply{construirBordas(largura,altura)}
     var morango = Morango(Posicao(0,0))
+    var pontuacaoTotal: Int = 0
 
     init {
         gerarNovoMorango()
@@ -29,6 +30,7 @@ class Jogo(val largura : Int,val altura : Int)
         if(snake.cabeca==morango.posicao)
         {
             snake.upGrade()
+            pontuacaoTotal += morango.valor
             gerarNovoMorango()
         }
     }
