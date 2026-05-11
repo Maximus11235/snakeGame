@@ -7,8 +7,9 @@
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    alias(libs.plugins.jvm)
-
+    alias(libs.plugins.jvm)  
+    // ADICIONE ESTA LINHA ABAIXO:
+    kotlin("plugin.serialization") version "1.9.22" 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }

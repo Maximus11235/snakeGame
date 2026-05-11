@@ -15,6 +15,28 @@ socket.onclose = function(event) {
 // Evento: Quando o servidor manda alguma coisa de volta
 socket.onmessage = function(event) {
     console.log("📩 Servidor diz: ", event.data);
+    // Pega o canvas que está no seu index.html
+    const canvas = document.getElementById("gameCanvas");
+    const contexto = canvas.getContext("2d");
+    const tamanhoBloco = 20; // Tamanho da nossa grade lógica
+
+    //socket.onmessage = function(event) {
+    // 1. O texto do Kotlin chega aqui e é convertido de volta para objeto
+        const jogo = JSON.parse(event.data); 
+
+    // 2. Apaga a tela inteira (o quadro negro)
+        //contexto.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 3. Pinta a comida de vermelho
+        contexto.fillStyle = "red";
+        contexto.fillRect(jogo.comida.x * tamanhoBloco, jogo.comida.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+
+    // 4. Pinta a cobra de verde
+        contexto.fillStyle = "green";
+        jogo.cobra.forEach(parte => {
+            contexto.fillRect(parte.x * tamanhoBloco, parte.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+        });
+//};
 };
 
 // 2. Escuta as teclas do teclado
