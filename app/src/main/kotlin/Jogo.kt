@@ -4,8 +4,7 @@ import kotlinx.serialization.json.*
 @Serializable
 data class EstadoDoJogo(val cobra: List<Posicao>, val comida: Posicao)
 
-class Jogo(val largura : Int,val altura : Int)
-{
+class Jogo(val largura : Int,val altura : Int){
     val snake = Snake(Posicao(largura/2 ,altura/2))
     val wall = Wall().apply{construirBordas(largura,altura)}
     var morango = Morango(Posicao(0,0))
@@ -15,33 +14,27 @@ class Jogo(val largura : Int,val altura : Int)
         gerarNovoMorango()
     }
 
-    fun verificarColisoes()
-    {
-        if (snake.cabeca in wall.blocos)
-        {
+    fun verificarColisoes(){
+        if (snake.cabeca in wall.blocos){
             gameOver()
             return
         }
-        if (snake.cabeca in snake.corpo)
-        {
+        if (snake.cabeca in snake.corpo){
             gameOver()
             return
         }
-        if(snake.cabeca==morango.posicao)
-        {
+        if(snake.cabeca==morango.posicao){
             snake.upGrade()
             pontuacaoTotal += morango.valor
             gerarNovoMorango()
         }
     }
 
-    private fun gerarNovoMorango()
-    {
+    private fun gerarNovoMorango(){
         var novaPosicao : Posicao
         var posicaoInvalida : Boolean
 
-        do
-        {
+        do{
             val randomX=(0 until largura).random()
             val randomY=(0 until altura).random()
             novaPosicao=Posicao(randomX,randomY)
@@ -55,8 +48,23 @@ class Jogo(val largura : Int,val altura : Int)
 
         morango.posicao=novaPosicao
     }
-    private fun gameOver()
-    {
+
+    fun atualizar(){
+        val cabecaAtual = snake.cabeca
+
+        //calculando a proxima posicao
+        val proximaPosicao=when(snake.direcao){
+            Direcao.UP->Posicao(cabecaAtual.x,cabecaAtual.y-1)
+            Direcao.DOWN->Posicao(cabecaAtual.x,cabecaAtual.y+1)
+            Direcao.RIGHT->Posicao(cabecaAtual.x+1,cabecaAtual.y)
+            Direcao.LEFT->Posicao(cabecaAtual.x-1,cabecaAtual.y)
+        }
+        snake.mover(proximaPosicao)
+        
+        verificarColisoes()
+    }
+
+    private fun gameOver(){
         println("fim de jogo")
     }
 }
