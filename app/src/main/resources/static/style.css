@@ -6,10 +6,12 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    font-family: sans-serif; /* Adicionado para deixar a fonte mais limpa */
 }
 
 #game-container {
     text-align: center;
+    position: relative; /* CRUCIAL: Permite que a tela de Game Over flutue baseada neste container */
 }
 
 #scoreboard {
@@ -25,4 +27,51 @@ canvas {
     background-color: #000;
     /* Aqui você pode usar um background image de grade se quiser o visual de favos */
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    display: block; /* Evita uma pequena margem fantasma que o canvas tem por padrão */
+}
+
+/* --- NOVIDADES: Estilização da Tela de Game Over --- */
+
+#telaGameOver {
+    display: none; /* Controlado pelo JavaScript */
+    position: absolute;
+    top: 55%; /* Centraliza verticalmente (ajustado para ignorar o scoreboard) */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Puxa o elemento para o exato centro matemático */
+    
+    background-color: rgba(0, 0, 0, 0.85); /* Fundo escuro semi-transparente */
+    padding: 40px 80px;
+    border-radius: 10px;
+    border: 3px solid #444;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+#telaGameOver h2 {
+    color: #ff4c4c; /* Um vermelho vibrante para indicar derrota */
+    font-size: 36px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#btnRestart {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+#btnRestart:hover {
+    background-color: #45a049; /* Fica um pouco mais escuro ao passar o mouse */
+}
+
+#btnRestart:active {
+    transform: scale(0.95); /* Dá um efeitinho de "clique" apertando o botão */
 }

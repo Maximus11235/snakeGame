@@ -2,14 +2,19 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 @Serializable
-data class EstadoDoJogo(val cobra: List<Posicao>, val comida: Posicao)
+data class EstadoDoJogo(
+    val cobra: List<Posicao>,
+    val comida: Posicao,
+    val pontuacao: Int,
+    val gameOver: Boolean
+)
 
 class Jogo(val largura : Int,val altura : Int){
-    val snake = Snake(Posicao(largura/2 ,altura/2))
+    val snake = Snake(Posicao(largura/4 ,altura/4))
     val wall = Wall().apply{construirBordas(largura,altura)}
     var morango = Morango(Posicao(0,0))
     var pontuacaoTotal: Int = 0
-
+    var isGameOver: Boolean = false
     init {
         gerarNovoMorango()
     }
@@ -40,8 +45,8 @@ class Jogo(val largura : Int,val altura : Int){
             novaPosicao=Posicao(randomX,randomY)
             
             val naParede=novaPosicao in wall.blocos
-            val noCorpo=novaPosicao in snake.blocos
-            val naCabeca==novaPosicao==snake.cabeca
+            val noCorpo=novaPosicao in snake.corpo
+            val naCabeca=novaPosicao==snake.cabeca
             
             posicaoInvalida= naParede || noCorpo || naCabeca
         }while(posicaoInvalida)
@@ -50,6 +55,7 @@ class Jogo(val largura : Int,val altura : Int){
     }
 
     fun atualizar(){
+        if (isGameOver) return
         val cabecaAtual = snake.cabeca
 
         //calculando a proxima posicao
@@ -65,6 +71,7 @@ class Jogo(val largura : Int,val altura : Int){
     }
 
     private fun gameOver(){
+        isGameOver = true
         println("fim de jogo")
     }
 }
