@@ -1,6 +1,10 @@
 // 1. Conecta ao WebSocket do Ktor
-// O navegador sabe que deve procurar a porta 8080 no localhost
 const socket = new WebSocket("ws://localhost:8080/game");
+
+// Configurações do Canvas (buscamos apenas uma vez para economizar processamento)
+const canvas = document.getElementById("gameCanvas");
+const contexto = canvas.getContext("2d");
+const tamanhoBloco = 20; // Tamanho da nossa grade lógica
 
 // Evento: Quando a conexão dá certo
 socket.onopen = function(event) {
@@ -12,32 +16,55 @@ socket.onclose = function(event) {
     console.log("🔴 Conexão encerrada com o servidor.");
 };
 
-// Evento: Quando o servidor manda alguma coisa de volta
+// Evento: ÚNICO onmessage para gerenciar o estado que chega do servidor
 socket.onmessage = function(event) {
-    console.log("📩 Servidor diz: ", event.data);
-    // Pega o canvas que está no seu index.html
-    const canvas = document.getElementById("gameCanvas");
-    const contexto = canvas.getContext("2d");
-    const tamanhoBloco = 20; // Tamanho da nossa grade lógica
+    const estado = JSON.parse(event.data);
+    
+    // Atualiza o texto da pontuação no HTML
+    document.getElementById("score").innerText = estado.pontuacao;
 
-    //socket.onmessage = function(event) {
-    // 1. O texto do Kotlin chega aqui e é convertido de volta para objeto
-        const jogo = JSON.parse(event.data); 
-
-    // 2. Apaga a tela inteira (o quadro negro)
-        //contexto.clearRect(0, 0, canvas.width, canvas.height);
-
-    // 3. Pinta a comida de vermelho
-        contexto.fillStyle = "red";
-        contexto.fillRect(jogo.comida.x * tamanhoBloco, jogo.comida.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
-
-    // 4. Pinta a cobra de verde
-        contexto.fillStyle = "green";
-        jogo.cobra.forEach(parte => {
-            contexto.fillRect(parte.x * tamanhoBloco, parte.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
-        });
-//};
+    if (estado.gameOver) {
+        // Mostra a tela de derrota
+        document.getElementById("telaGameOver").style.display = "block";
+    } else {
+        // Esconde a tela de derrota e desenha o estado atual
+        document.getElementById("telaGameOver").style.display = "none";
+        desenharJogo(estado.cobra, estado.comida);
+    }
 };
+
+// Função responsável APENAS por pintar os pixels no Canvas
+function desenharJogo(cobra, comida) {
+    // 1. Apaga a tela inteira (Descomentado! Crucial para a cobra não deixar rastro)
+    contexto.clearRect(0, 0, canvas.width, canvas.height);
+
+    const larguraGrade = 40; 
+    const alturaGrade = 40;
+
+    contexto.fillStyle = "gray"; // Substitua "gray" pela cor ou código Hex que desejar
+    
+    // Desenha as bordas superior e inferior
+    for (let x = 0; x < larguraGrade; x++) {
+        contexto.fillRect(x * tamanhoBloco, 0, tamanhoBloco, tamanhoBloco); // Topo
+        contexto.fillRect(x * tamanhoBloco, (alturaGrade - 1) * tamanhoBloco, tamanhoBloco, tamanhoBloco); // Base
+    }
+    // Desenha as bordas laterais
+    for (let y = 0; y < alturaGrade; y++) {
+        contexto.fillRect(0, y * tamanhoBloco, tamanhoBloco, tamanhoBloco); // Esquerda
+        contexto.fillRect((larguraGrade - 1) * tamanhoBloco, y * tamanhoBloco, tamanhoBloco, tamanhoBloco); // Direita
+    }
+
+    // 2. Pinta a comida de vermelho
+    contexto.fillStyle = "red";
+    contexto.fillRect(comida.x * tamanhoBloco, comida.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+
+    // 3. Pinta a cobra de verde
+    contexto.fillStyle = "green";
+    cobra.forEach(parte => {
+        contexto.fillRect(parte.x * tamanhoBloco, parte.y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+    });
+
+}
 
 // 2. Escuta as teclas do teclado
 document.addEventListener("keydown", function(event) {
@@ -73,3 +100,8 @@ document.addEventListener("keydown", function(event) {
         socket.send(comando); 
     }
 });
+
+// Quando o botão for clicado no HTML (Tela de Game Over):
+function reiniciarJogo() {
+    socket.send("RESTART");
+}
